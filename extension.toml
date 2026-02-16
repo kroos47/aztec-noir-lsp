@@ -1,0 +1,15 @@
+id = "aztec-noir"
+name = "Aztec Noir"
+version = "0.1.0"
+schema_version = 1
+authors = ["Kailas <kailaskr05@gmail.com>"]
+description = "Noir language support for Zed with Aztec-specific features. Provides syntax highlighting, LSP diagnostics via nargo, and useful snippets."
+repository = "https://github.com/your-username/aztec-noir-zed"
+
+[language_servers.nargo]
+name = "nargo"
+languages = ["Noir"]
+
+[grammars.noir]
+repository = "file:///Users/kroos/KROOS/tree_sitter_noir/"
+rev = "1139d8f75836b0f6c3f8ceb1b0ed18397ca79d30"

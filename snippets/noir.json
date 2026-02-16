@@ -1,0 +1,258 @@
+{
+  "Function": {
+    "prefix": ["fn"],
+    "body": [
+      "fn ${1:name}(${2:params}) ${3:-> ${4:ReturnType} }{",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Define a function"
+  },
+  "Public Function": {
+    "prefix": ["pubfn", "pfn"],
+    "body": [
+      "pub fn ${1:name}(${2:params}) ${3:-> ${4:ReturnType} }{",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Define a public function"
+  },
+  "Main Function": {
+    "prefix": ["main"],
+    "body": ["fn main(${1:params}) {", "    ${0}", "}"],
+    "description": "Define the main entry point"
+  },
+  "Test Function": {
+    "prefix": ["test"],
+    "body": ["#[test]", "fn ${1:test_name}() {", "    ${0}", "}"],
+    "description": "Define a test function"
+  },
+  "Struct": {
+    "prefix": ["struct"],
+    "body": ["struct ${1:Name} {", "    ${2:field}: ${3:Type},${0}", "}"],
+    "description": "Define a struct"
+  },
+  "Impl Block": {
+    "prefix": ["impl"],
+    "body": ["impl ${1:Type} {", "    ${0}", "}"],
+    "description": "Define an impl block"
+  },
+  "Trait": {
+    "prefix": ["trait"],
+    "body": ["trait ${1:Name} {", "    ${0}", "}"],
+    "description": "Define a trait"
+  },
+  "Let Binding": {
+    "prefix": ["let"],
+    "body": ["let ${1:name}${2:: ${3:Type}} = ${0};"],
+    "description": "Immutable variable binding"
+  },
+  "Let Mut Binding": {
+    "prefix": ["letm", "letmut"],
+    "body": ["let mut ${1:name}${2:: ${3:Type}} = ${0};"],
+    "description": "Mutable variable binding"
+  },
+  "For Loop": {
+    "prefix": ["for"],
+    "body": ["for ${1:i} in ${2:0}..${3:n} {", "    ${0}", "}"],
+    "description": "For loop with range"
+  },
+  "If": {
+    "prefix": ["if"],
+    "body": ["if ${1:condition} {", "    ${0}", "}"],
+    "description": "If statement"
+  },
+  "If Else": {
+    "prefix": ["ife", "ifelse"],
+    "body": ["if ${1:condition} {", "    ${2}", "} else {", "    ${0}", "}"],
+    "description": "If-else statement"
+  },
+  "Assert": {
+    "prefix": ["assert"],
+    "body": ["assert(${1:condition}${2:, \"${3:message}\"});${0}"],
+    "description": "Assert statement"
+  },
+  "Assert Eq": {
+    "prefix": ["asserteq", "aeq"],
+    "body": ["assert(${1:left} == ${2:right}${3:, \"${4:message}\"});${0}"],
+    "description": "Assert equality"
+  },
+  "Module": {
+    "prefix": ["mod"],
+    "body": ["mod ${1:name};${0}"],
+    "description": "Module declaration"
+  },
+  "Use Import": {
+    "prefix": ["use"],
+    "body": ["use ${1:path}::${2:item};${0}"],
+    "description": "Use import"
+  },
+  "Constrain": {
+    "prefix": ["constrain"],
+    "body": ["constrain ${1:expression};${0}"],
+    "description": "Constrain statement"
+  },
+  "Global": {
+    "prefix": ["global"],
+    "body": ["global ${1:NAME}: ${2:Type} = ${3:value};${0}"],
+    "description": "Global constant"
+  },
+  "Unconstrained Function": {
+    "prefix": ["unconstrained", "ufn"],
+    "body": [
+      "unconstrained fn ${1:name}(${2:params}) -> ${3:ReturnType} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Unconstrained function (no circuit constraints)"
+  },
+  "Comptime Function": {
+    "prefix": ["comptime", "ctfn"],
+    "body": [
+      "comptime fn ${1:name}(${2:params}) -> ${3:ReturnType} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Compile-time function"
+  },
+  "Type Alias": {
+    "prefix": ["type"],
+    "body": ["type ${1:Name} = ${2:Type};${0}"],
+    "description": "Type alias"
+  },
+
+  "Aztec Contract": {
+    "prefix": ["contract", "azteccontract"],
+    "body": [
+      "contract ${1:ContractName} {",
+      "    use dep::aztec::prelude::{",
+      "        AztecAddress,",
+      "        Map,",
+      "        PublicMutable,",
+      "        PrivateMutable,",
+      "    };",
+      "",
+      "    #[aztec(storage)]",
+      "    struct Storage {",
+      "        ${2:field}: ${3:PublicMutable<Field>},",
+      "    }",
+      "",
+      "    #[aztec(initializer)]",
+      "    fn constructor(${4:params}) {",
+      "        ${5}",
+      "    }",
+      "",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Aztec contract boilerplate"
+  },
+  "Aztec Private Function": {
+    "prefix": ["aztecpriv", "privfn"],
+    "body": [
+      "#[aztec(private)]",
+      "fn ${1:name}(${2:params})${3: -> ${4:ReturnType}} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Aztec private function"
+  },
+  "Aztec Public Function": {
+    "prefix": ["aztecpub", "pubfnaz"],
+    "body": [
+      "#[aztec(public)]",
+      "fn ${1:name}(${2:params})${3: -> ${4:ReturnType}} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Aztec public function"
+  },
+  "Aztec Initializer": {
+    "prefix": ["aztecinit", "constructor"],
+    "body": [
+      "#[aztec(initializer)]",
+      "fn constructor(${1:params}) {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Aztec contract initializer/constructor"
+  },
+  "Aztec Internal Function": {
+    "prefix": ["aztecinternal"],
+    "body": [
+      "#[aztec(internal)]",
+      "#[aztec(${1|private,public|})]",
+      "fn ${2:name}(${3:params}) {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Aztec internal function"
+  },
+  "Aztec View Function": {
+    "prefix": ["aztecview"],
+    "body": [
+      "#[aztec(${1|private,public|})]",
+      "#[aztec(view)]",
+      "fn ${2:name}(${3:params}) -> ${4:ReturnType} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Aztec view function (read-only)"
+  },
+  "Aztec Storage Struct": {
+    "prefix": ["aztecstorage"],
+    "body": [
+      "#[aztec(storage)]",
+      "struct Storage {",
+      "    ${1:field}: ${2:PublicMutable<${3:Field}>},${0}",
+      "}"
+    ],
+    "description": "Aztec storage struct"
+  },
+  "Aztec Note Struct": {
+    "prefix": ["aztecnote"],
+    "body": [
+      "#[aztec(note)]",
+      "struct ${1:NoteName} {",
+      "    ${2:owner}: AztecAddress,",
+      "    ${3:value}: Field,${0}",
+      "}"
+    ],
+    "description": "Aztec note struct"
+  },
+  "Aztec Prelude Import": {
+    "prefix": ["aztecimport", "useaztec"],
+    "body": [
+      "use dep::aztec::prelude::{",
+      "    AztecAddress,",
+      "    ${0}",
+      "};"
+    ],
+    "description": "Import from Aztec prelude"
+  },
+  "Aztec Storage Import": {
+    "prefix": ["aztecstorageimport"],
+    "body": [
+      "use dep::aztec::prelude::{",
+      "    Map,",
+      "    PublicMutable,",
+      "    PublicImmutable,",
+      "    PrivateMutable,",
+      "    PrivateImmutable,",
+      "    PrivateSet,",
+      "    SharedImmutable,",
+      "};"
+    ],
+    "description": "Import Aztec storage types"
+  },
+  "Aztec Event": {
+    "prefix": ["aztecevent"],
+    "body": [
+      "#[aztec(event)]",
+      "struct ${1:EventName} {",
+      "    ${2:field}: ${3:Field},${0}",
+      "}"
+    ],
+    "description": "Aztec event struct"
+  }
+}
