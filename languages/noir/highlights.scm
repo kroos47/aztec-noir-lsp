@@ -105,9 +105,41 @@
 (module_or_contract_item
   name: (identifier) @title)
 
-; Use/Import paths
+; Use/Import paths — granular coloring
+; Module scope identifiers (e.g., `aztec` in `use aztec::...`)
 (use_item
-  (path) @title)
+  decl: (path
+    scope: (identifier) @title))
+
+; Nested module scope identifiers (e.g., `macros` in `aztec::macros::...`)
+(path
+  scope: (path
+    name: (identifier) @title))
+
+; Deeply nested scope
+(path
+  scope: (path
+    scope: (identifier) @title))
+
+; Imported type names (PascalCase) in use lists
+((use_list
+  (identifier) @type)
+  (#match? @type "^[A-Z]"))
+
+; Imported function/value names (lowercase) in use lists
+((use_list
+  (identifier) @function)
+  (#match? @function "^[a-z]"))
+
+; Final path name — PascalCase → type
+((path
+  name: (identifier) @type)
+  (#match? @type "^[A-Z]"))
+
+; Final path name — lowercase → function
+((path
+  name: (identifier) @function)
+  (#match? @function "^[a-z]"))
 
 ; ---------- Literals ----------
 (str_literal) @string
