@@ -11,5 +11,5 @@ name = "nargo"
 languages = ["Noir"]
 
 [grammars.noir]
-repository = "file:///Users/kroos/KROOS/tree_sitter_noir/"
-rev = "1139d8f75836b0f6c3f8ceb1b0ed18397ca79d30"
+repository = "https://github.com/tsujp/tree_sitter_noir"
+rev = "d4736866d5c3638bcc856c0379153f6bf58a3ae2"
