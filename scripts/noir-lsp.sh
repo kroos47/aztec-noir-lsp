@@ -1,72 +1,45 @@
 #!/usr/bin/env bash
-# noir-lsp: Wrapper that tries `aztec lsp` (Docker) first, falls back to `nargo lsp`
+# noir-lsp: Finds nargo and runs `nargo lsp`
 #
-# Install:
-#   cp bin/noir-lsp ~/.local/bin/noir-lsp && chmod +x ~/.local/bin/noir-lsp
+# Useful when nargo isn't in your editor's PATH but is installed
+# via aztec-up at ~/.aztec/current/bin/nargo
 #
 # Zed settings.json:
-#   "lsp": { "nargo": { "binary": { "path": "noir-lsp" } } }
+#   "lsp": { "nargo": { "binary": { "path": "/path/to/noir-lsp.sh" } } }
 
 set -euo pipefail
-
-# Safer PATH (optional). Uncomment if you want to restrict binary resolution.
-# export PATH="/usr/local/bin:/usr/bin:/bin:${HOME}/.local/bin:${HOME}/.aztec/bin:${HOME}/.nargo/bin"
 
 # Prevent shared library injection
 unset LD_PRELOAD LD_LIBRARY_PATH DYLD_INSERT_LIBRARIES DYLD_LIBRARY_PATH 2>/dev/null || true
 
-die() {
-  printf '[noir-lsp] Error: %s\n' "$*" >&2
-  exit 1
-}
+readonly NARGO_AZTEC="${HOME}/.aztec/current/bin/nargo"
+readonly NARGO_STANDALONE="${HOME}/.nargo/bin/nargo"
 
-has_cmd() {
-  command -v "$1" >/dev/null 2>&1
+die() {
+    printf '[noir-lsp] Error: %s\n' "$*" >&2
+    exit 1
 }
 
 validate_bin() {
-  local bin="$1"
-  [[ -x "$bin" ]] && [[ -f "$bin" || -L "$bin" ]]
+    local bin="$1"
+    [[ -x "$bin" ]] && [[ -f "$bin" || -L "$bin" ]]
 }
 
-docker_running() {
-  command -v docker >/dev/null 2>&1 || return 1
-
-  # Reject remote Docker daemons — LSP should run locally
-  if [[ "${DOCKER_HOST:-}" =~ ^tcp:// ]]; then
-    return 1
-  fi
-
-  # Timeout prevents hanging if Docker daemon is wedged
-  timeout 5 docker info >/dev/null 2>&1
-}
-
-# Prefer known absolute installs first to reduce PATH hijack risk
-AZTEC_BIN=""
-NARGO_BIN=""
-
-if validate_bin "${HOME}/.aztec/bin/aztec"; then
-  AZTEC_BIN="${HOME}/.aztec/bin/aztec"
-elif has_cmd aztec; then
-  AZTEC_BIN="$(command -v aztec)"
+# Prefer aztec-installed nargo (version-matched to aztec toolchain)
+if validate_bin "$NARGO_AZTEC"; then
+    exec "$NARGO_AZTEC" lsp "$@"
 fi
 
-if validate_bin "${HOME}/.nargo/bin/nargo"; then
-  NARGO_BIN="${HOME}/.nargo/bin/nargo"
-elif has_cmd nargo; then
-  NARGO_BIN="$(command -v nargo)"
+# Standalone nargo via noirup
+if validate_bin "$NARGO_STANDALONE"; then
+    exec "$NARGO_STANDALONE" lsp "$@"
 fi
 
-# Try aztec first if Docker is available
-if [[ -n "$AZTEC_BIN" ]] && docker_running; then
-  exec "$AZTEC_BIN" lsp "$@"
+# Fall back to PATH
+if command -v nargo >/dev/null 2>&1; then
+    exec nargo lsp "$@"
 fi
 
-# Fall back to nargo
-if [[ -n "$NARGO_BIN" ]]; then
-  exec "$NARGO_BIN" lsp "$@"
-fi
-
-die "Neither 'aztec' (with Docker available) nor 'nargo' found.
-  Install aztec: bash -i <(curl -s https://install.aztec.network)
-  Install nargo: https://noir-lang.org/docs/getting_started/installation/"
+die "nargo not found.
+  Install via aztec: bash -i <(curl -s https://install.aztec.network)
+  Or standalone: https://noir-lang.org/docs/getting_started/installation/"

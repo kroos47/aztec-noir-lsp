@@ -30,25 +30,20 @@ impl AztecNoirExtension {
             }
             return Err("Noir does not provide pre-built Windows binaries. \
                 Please build nargo from source and add it to your PATH."
-                .to_string());
+                .into());
         }
 
-        // 2. Try `noir-lsp` wrapper (handles aztec→nargo fallback with Docker check)
+        // 2. Try `noir-lsp` wrapper in PATH
         if let Some(path) = worktree.which("noir-lsp") {
             return Ok(path);
         }
 
-        // 3. Try `aztec` (needs Docker running)
-        if let Some(path) = worktree.which("aztec") {
-            return Ok(path);
-        }
-
-        // 4. Try `nargo` in PATH
+        // 3. Try `nargo` in PATH
         if let Some(path) = worktree.which("nargo") {
             return Ok(path);
         }
 
-        // 5. Try cached downloaded binary
+        // 4. Try cached binary
         if let Some(path) = self
             .cached_binary_path
             .as_ref()
@@ -57,10 +52,10 @@ impl AztecNoirExtension {
             return Ok(path.clone());
         }
 
-        Err("Could not find noir-lsp, aztec, or nargo in PATH. \
-            Install aztec: bash -i <(curl -s https://install.aztec.network) \
-            Or install nargo: https://noir-lang.org/docs/getting_started/installation/"
-            .to_string())
+        Err("Could not find nargo in PATH. \
+            Install: bash -i <(curl -s https://install.aztec.network) \
+            Or nargo standalone: https://noir-lang.org/docs/getting_started/installation/"
+            .into())
     }
 }
 
@@ -82,8 +77,8 @@ impl zed::Extension for AztecNoirExtension {
             .ok()
             .and_then(|s| s.settings);
 
-        // The wrapper script (noir-lsp) handles `lsp` internally,
-        // but aztec and nargo need the `lsp` subcommand.
+        // The wrapper script (noir-lsp) handles `lsp` subcommand internally,
+        // nargo needs the `lsp` subcommand passed explicitly.
         let is_wrapper = binary_path.ends_with("noir-lsp");
 
         let mut args = if is_wrapper {
