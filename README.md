@@ -104,15 +104,12 @@ If you don't configure `lsp.nargo.binary` at all, the extension tries to find na
    aztec = { git = "https://github.com/AztecProtocol/aztec-packages/", tag = "v4.0.0-devnet.1-patch.1", directory = "noir-projects/aztec-nr/aztec" }
    ```
 
-5. **LSP stale after `Nargo.toml` change** — Compile first (`aztec compile` or `nargo compile`), then restart LSP via **Cmd+Shift+P** → `zed: restart language server`.
+> **Note:** If the grammar fails to compile for Zed's WASM target, a compatibility patch may be needed. Raise an issue if it happens so an appropriate patch can be applied. 
 
 ## Acknowledgements
 
-Syntax highlighting in this extension is powered by [tree_sitter_noir](https://github.com/tsujp/tree_sitter_noir), maintained by **@tsujp**. This is by far the most comprehensive tree-sitter grammar available for Noir — actively developed, built directly against the Noir compiler source, and kept in sync with language changes. We are grateful for the effort that has gone into making this resource available to the community.
-
-> **Note:** If the grammar fails to compile for Zed's WASM target, a compatibility patch may be needed. A pre-made patch is available in `grammar-patches/` — if you run into this, please open an issue.
-
-Patterns and inspiration from existing Zed Noir extensions: [zoir](https://github.com/nicholasgasior/zed-noir) by **Hydepwns** and [zed-noir](https://github.com/shuklaayush/zed-noir) by **@shuklaayush**.
+Syntax highlighting in this extension is powered by [tree_sitter_noir](https://github.com/tsujp/tree_sitter_noir) grammar by [**@tsujp**](https://github.com/tsujp). 
+This is by far the most comprehensive tree-sitter grammar available for Noir — actively developed, built directly against the Noir compiler source, and kept in sync with language changes. We are grateful for the effort that has gone into making this resource available to the community.
 
 Built for the [Aztec](https://aztec.network) and [Noir](https://noir-lang.org) ecosystems.
 
