@@ -4,7 +4,7 @@ version = "0.1.0"
 schema_version = 1
 authors = ["Kailas <kailaskr05@gmail.com>"]
 description = "Noir language support for Zed with Aztec-specific features. Provides syntax highlighting, LSP diagnostics via nargo, and useful snippets."
-repository = "https://github.com/your-username/aztec-noir-zed"
+repository = "https://github.com/kroos47/aztec-noir-lsp"
 
 [language_servers.nargo]
 name = "nargo"
